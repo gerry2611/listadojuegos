@@ -17,9 +17,10 @@
             </tbody>
         </table>
     </div>
-    <div>
-        <button>Insertar</button>
-        <button>Eliminar</button>
+    <br>
+    <div class="btn-group">
+        <button type="button" class="btn btn-primary">Insertar</button>
+        <button type="button" class="btn btn-danger">Eliminar</button>
     </div>
 </template>
 
