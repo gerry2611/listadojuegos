@@ -4,6 +4,7 @@
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>Logo</th>
                     <th>Plataforma</th>
                     <th>Descripcion</th>
                 </tr>
@@ -11,6 +12,7 @@
             <tbody style="color: #D1CBC8;">
                 <tr v-for="plataforma in plataformas" :key="plataforma.idconsola">
                     <td>{{ plataforma.idconsola }}</td>
+                    <td><img class="img" v-bind:src="require(`@/assets/${plataforma.img}`)" alt="no disponible" width="20%" height="20%"></td>
                     <td>{{ plataforma.nombre }}</td>
                     <td>{{ plataforma.descripcion }}</td>
                 </tr>
@@ -21,6 +23,7 @@
     <div class="btn-group">
         <button type="button" class="btn btn-primary">Insertar</button>
         <button type="button" class="btn btn-danger">Eliminar</button>
+        <button type="button" class="btn btn-secondary">Modal</button>
     </div>
 </template>
 

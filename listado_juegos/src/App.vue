@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-secondary">
+  <div>
     <Header />
     <router-view></router-view>
     <Footer />
