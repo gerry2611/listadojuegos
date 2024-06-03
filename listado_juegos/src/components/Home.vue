@@ -1,16 +1,14 @@
 <template>
-    Catálogo de Videojuegos - Proximamente
+    <div style="padding-top: 13%; padding-left: 25%;">
+        <img src="../assets/Logo_Principal_Catalogo.png" alt="Logo Principal Catálogo">
+    </div>
+    
 </template>
 
 <script>
 /* eslint-disable */
-//import axios from 'axios';
 
 export default{
     name: "Home",
 };
 </script>
-
-<style scoped>
-
-</style>
