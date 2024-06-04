@@ -1,5 +1,5 @@
 <template>
-    <footer class="footer py-3 bg-dark" style="position: absolute; bottom: 0px; left: 0px; width: 100%;">
+    <footer class="footer mt-auto py-3 bg-dark fixed-bottom static-bottom" style="bottom: 0px; left: 0px; width: 100%;">
         <div class="container">
             <span class="text-muted">Copyright - Gerineldo Sousa Sanchez</span>
         </div>
