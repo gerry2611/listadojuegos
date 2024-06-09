@@ -65,7 +65,7 @@ export default{
                 this.juegos = res.data.data;
             })
             .catch(() => {
-                console.log("Algo anda mal.");
+                console.log("Algo anda mal con la tabla 'listado_juegos'.");
             })
         }
     }

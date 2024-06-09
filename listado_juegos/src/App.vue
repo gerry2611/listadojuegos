@@ -3,6 +3,7 @@
     <Header />
     <router-view></router-view>
     <Footer />
+    <notifications />
   </div>
 </template>
 
