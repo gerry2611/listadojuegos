@@ -47,6 +47,23 @@ app.get("/api/juegos", (req, res) => {
     })
 })
 
+app.get("/api/lista_consolas", (req, res) => {
+    let query = 'CALL listado_juegos.DD_Consolas();'
+
+    connection.query(query, (err, result) => {
+        if(err){
+            res.json(500, {
+                msg: "Problemas con el procedimiento"
+            })
+        }
+
+        res.send(200, {
+            msg: "Datos obtenidos con éxito.",
+            data: result
+        })
+    })
+})
+
 const connection = mysql.createConnection({
     host: "localhost",
     user: "gerry",

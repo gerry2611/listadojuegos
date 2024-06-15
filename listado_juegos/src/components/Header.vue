@@ -1,6 +1,6 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="navbar-brand" href="#">Listado de Videojuegos</div>
+        <div class="navbar-brand" href="#">Catálogo de Videojuegos</div>
         <button
             class="navbar-toggler"
             type="button"
