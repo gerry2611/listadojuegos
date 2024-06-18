@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
     res.send("Hola desde el servidor");
 })
 //Generar tablas
-app.get("/api/plataformas", (req, res) => {
+app.get("/api/consolas", (req, res) => {
     let query = "SELECT * FROM listado_juegos.consolas";
 
     connection.query(query, (err, result) => {
@@ -48,7 +48,7 @@ app.get("/api/juegos", (req, res) => {
 })
 
 app.get("/api/lista_consolas", (req, res) => {
-    let query = 'CALL listado_juegos.DD_Consolas();'
+    let query = 'CALL DD_Consolas();'
 
     connection.query(query, (err, result) => {
         if(err){
@@ -58,7 +58,41 @@ app.get("/api/lista_consolas", (req, res) => {
         }
 
         res.send(200, {
-            msg: "Datos obtenidos con éxito.",
+            msg: "Datos obtenidos con éxito",
+            data: result
+        })
+    })
+})
+
+app.get("/api/plataformas", (req, res) => {
+    let query = 'SELECT * FROM plataformas;'
+
+    connection.query(query, (err, result) => {
+        if(err){
+            res.json(500, {
+                msg: "Problemas con el procedimiento"
+            })
+        }
+
+        res.send(200, {
+            msg: "Datos obtenidos con éxito",
+            data: result
+        })
+    })
+})
+
+app.get("/api/lista_plataformas", (req, res) => {
+    let query = 'CALL DD_Plataformas();'
+
+    connection.query(query, (err, result) => {
+        if(err){
+            res.json(500, {
+                msg: "Problemas con el procedimiento DD_Plataformas"
+            })
+        }
+
+        res.send(200, {
+            msg: "Datos obtenidos con éxito",
             data: result
         })
     })

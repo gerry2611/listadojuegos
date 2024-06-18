@@ -10,8 +10,8 @@
                 </tr>
             </thead>
             <tbody style="color: #D1CBC8;">
-                <tr v-for="plataforma in plataformas" :key="plataforma.idconsola">
-                    <td>{{ plataforma.idconsola }}</td>
+                <tr v-for="plataforma in plataformas" :key="plataforma.idplataforma">
+                    <td></td>
                     <td><img class="img" v-bind:src="require(`@/assets/${plataforma.img}`)" alt="no disponible" width="20%" height="20%"></td>
                     <td>{{ plataforma.nombre }}</td>
                     <td>{{ plataforma.descripcion }}</td>
