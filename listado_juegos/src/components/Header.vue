@@ -22,6 +22,11 @@
                 Juegos</router-link>
             </li>
             <li class="nav-item">
+                <router-link class="nav-link active" aria-current="page" to="/Consolas">
+                    Consolas
+                </router-link>
+            </li>
+            <li class="nav-item">
                 <router-link class="nav-link active" aria-current="page" to="/Plataformas">
                 Plataformas</router-link>
             </li> 

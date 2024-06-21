@@ -5,13 +5,16 @@
                 <tr>
                     <th>Acciones</th>
                     <th>Juego</th>
+                    <th>Consola</th>
                     <th>Plataforma</th>
                 </tr>
             </thead>
             <tbody style="color: #D1CBC8;">
                 <tr v-for="juego in juegos" :key="juego.idjuegos">
-                    <td></td>
+                    <td style="width: 220px;"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#">Editar</button>
+                        &nbsp;&nbsp;<button type="button" class="btn btn-danger">Eliminar</button></td>
                     <td>{{ juego.nombre }}</td>
+                    <td>{{ juego.consola }}</td>
                     <td>{{ juego.plataforma }}</td>
                 </tr>
             </tbody>
@@ -97,7 +100,26 @@
                             <label for="" class="mt-1">Estado</label>
                         </div>
                         <div class="col-md-9">
-                            Insertar Estado
+                            <div class="form-check form-check-inline">
+                                <input type="radio" class="form-check-input" name="estado" v-model="estado" id="estadoWishlist" value="Wishlist">
+                                <label class="form-check-label" for="estadoWishlist"><span class="badge rounded-pill bg-light text-dark">Wishlist</span></label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" class="form-check-input" name="estado" v-model="estado" id="estadoActivo" value="Activo">
+                                <label class="form-check-label" for="estadoActivo"><span class="badge rounded-pill bg-success">Activo</span></label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" class="form-check-input" name="estado" v-model="estado" id="estadoBacklog" value="Backlog">
+                                <label class="form-check-label" for="estadoBacklog"><span class="badge rounded-pill bg-primary">Backlog</span></label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" class="form-check-input" name="estado" v-model="estado" id="estadoPausa" value="En pausa">
+                                <label class="form-check-label" for="estadoPausa"><span class="badge rounded-pill bg-warning text-dark">En pausa</span></label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" class="form-check-input" name="estado" v-model="estado" id="estadoCompletado" value="Completado">
+                                <label class="form-check-label" for="estadoCompletado"><span class="badge rounded-pill bg-danger">Completado</span></label>
+                            </div>
                         </div>
                     </div>
                     <br>
@@ -137,7 +159,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-primary">Registrar</button>
+        <button class="btn btn-primary" @click="agregarJuego">Registrar</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
       </div>
     </div>
@@ -145,8 +167,6 @@
 </div>
     <div class="btn-group">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalInsert">Insertar</button>
-        <button type="button" class="btn btn-danger">Eliminar</button>
-        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">Modal</button>
     </div>
 
 
@@ -168,6 +188,7 @@ export default{
            lista_consola: "",
            lista_plataforma: "",
            fecha_adquirido: "",
+           estado: "",
            completado: "",
            fecha_completado: "",
            nota: ""
@@ -204,6 +225,22 @@ export default{
             .catch(() => {
                 console.log("Algo anda mal con el procedimiento DD_Plataformas");
                 alert("Algo anda mal con el procedimiento DD_Plataformas");
+            })
+        },
+        agregarJuego: function(){
+            axios.post("/api/juego_nuevo", {
+                nombre: this.nombre,
+                idconsola: this.lista_consola,
+                idplataforma: this.lista_plataforma,
+                fecha_adquirido: this.fecha_adquirido,
+                estado: this.estado,
+                completado: this.completado,
+                fecha_completado: this.fecha_completado,
+                nota: this.nota
+            }).then((res) => {
+                alert("Juego guardado con éxito en la Base de datos");
+            }).catch(() => {
+                alert("Error al agregar el juego, intente más tarde");
             })
         }
     }

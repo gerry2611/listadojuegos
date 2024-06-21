@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const mysql = require("mysql2");
 
 const app = express();
+const server = require("http").createServer(app);
 app.use(bodyParser());
 
 app.listen(3000, () => {
@@ -31,7 +32,7 @@ app.get("/api/consolas", (req, res) => {
 })
 
 app.get("/api/juegos", (req, res) => {
-    let query = "SELECT * FROM listado_juegos.juegos;"
+    let query = "SELECT * FROM lista_juegos;"
 
     connection.query(query, (err, result) => {
         if (err) {
@@ -98,6 +99,39 @@ app.get("/api/lista_plataformas", (req, res) => {
     })
 })
 
+app.post("/api/juego_nuevo", (req, res) => {
+    console.log("Registrando juego...");
+    let nombre = req.body.nombre;
+    let idconsola = req.body.idconsola;
+    let idplataforma = req.body.idplataforma;
+    let fecha_adquirido = req.body.fecha_adquirido;
+    let estado = req.body.estado;
+    let completado = req.body.completado;
+    let fecha_completado = req.body.fecha_completado;
+    let nota = req.body.nota;
+
+    if(!completado){
+        completado = 0
+    }else{
+        completado = 1
+    }
+
+    let query = `CALL agregar_juego("${nombre}",${idconsola},${idplataforma},"${fecha_adquirido}","${estado}",${completado},"${fecha_completado}","${nota}");`;
+
+    connection.query(query, (err, result) => {
+        if(err){
+            res.json(500, {
+                msg: "Error al insertar el juego"
+            })
+            return
+        }
+
+        res.json(200, {
+            msg: "Juego nuevo agregado exitosamente a la base de datos",
+        })
+        return
+    })
+});
 const connection = mysql.createConnection({
     host: "localhost",
     user: "gerry",

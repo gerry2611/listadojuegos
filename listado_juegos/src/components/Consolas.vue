@@ -10,11 +10,11 @@
                 </tr>
             </thead>
             <tbody style="color: #D1CBC8;">
-                <tr v-for="plataforma in plataformas" :key="plataforma.idplataforma">
-                    <td>{{ plataforma.idplataforma }}</td>
-                    <td><img class="img" v-bind:src="require(`@/assets/${plataforma.img}`)" alt="no disponible" width="20%" height="20%"></td>
-                    <td>{{ plataforma.nombre }}</td>
-                    <td>{{ plataforma.descripcion }}</td>
+                <tr v-for="consola in consolas" :key="consola.idconsola">
+                    <td>{{ consola.idplataforma }}</td>
+                    <td><img class="img" v-bind:src="require(`@/assets/${consola.img}`)" alt="no disponible" width="20%" height="20%"></td>
+                    <td>{{ consola.nombre }}</td>
+                    <td>{{ consola.descripcion }}</td>
                 </tr>
             </tbody>
         </table>
@@ -32,19 +32,19 @@
 import axios from 'axios';
 
 export default {
-    name: "Plataformas",
+    name: "Consolas",
     data() {
         return {
-            plataformas: {}
+            consolas: {}
         }
     },
     mounted(){
-        this.cargaTablaPlataformas();
+        this.cargaTablaConsolas();
     },
     methods: {
-        cargaTablaPlataformas: function(){
-            axios.get("/api/plataformas").then((res) => {
-                this.plataformas = res.data.data;
+        cargaTablaConsolas: function(){
+            axios.get("/api/consolas").then((res) => {
+                this.consolas = res.data.data;
             })
             .catch(()=>{
                 console.log("Algo anda mal.");
