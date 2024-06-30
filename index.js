@@ -48,6 +48,23 @@ app.get("/api/juegos", (req, res) => {
     })
 })
 
+app.get("/api/sesiones", (req, res) => {
+    let query = "SELECT * FROM lista_sesiones;"
+
+    connection.query(query, (err, result) => {
+        if (err) {
+            res.json(500, {
+                msg: "Error en el servidor interno, intentelo más tarde."
+            })
+        }
+
+        res.send(200, {
+            msg: "Datos obtenidos con éxito",
+            data: result
+        })
+    })
+})
+
 app.get("/api/lista_consolas", (req, res) => {
     let query = 'CALL DD_Consolas();'
 
@@ -95,6 +112,23 @@ app.get("/api/lista_plataformas", (req, res) => {
         res.send(200, {
             msg: "Datos obtenidos con éxito",
             data: result
+        })
+    })
+})
+
+app.get("/api/lista_juegos", (req, res) => {
+    let query = 'CALL DD_Juegos();'
+
+    connection.query(query, (err, result) => {
+        if(err){
+            res.json(500, {
+                msg: "Problemas con el procedimiento DD_Juegos"
+            })
+        }
+
+        res.send(200, {
+            msg: "Datos obtenidos con éxito",
+            data:result
         })
     })
 })

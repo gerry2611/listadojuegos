@@ -1,14 +1,187 @@
 <template>
     <div>
-        Proximamente
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Sesión No.</th>
+                    <th>Juego</th>
+                    <th>Consola</th>
+                    <th>Plataforma</th>
+                    <th>Inicio</th>
+                    <th>Fin</th>
+                    <th>Duración</th>
+                    <th>Demo</th>
+                </tr>
+            </thead>
+            <tbody style="color: #D1CBC8;">
+                <tr v-for="sesion in sesiones" :key="sesion.idsesion">
+                    <td></td>
+                    <td>{{ sesion.juego }}</td>
+                    <td>{{ sesion.consola }}</td>
+                    <td>{{ sesion.plataforma }}</td>
+                    <td>{{ sesion.hora_inicio }}</td>
+                    <td>{{ sesion.hora_fin }}</td>
+                    <td>{{ sesion.duracion }}</td>
+                    <td>{{ sesion.demo }}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
+    <br>
+    <!-- Modal -->
+    <div class="modal fade" id="modalInsert" tabindex="-1" aria-labelledby="modalInsertLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalInsertLabel">Agregar Juego</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row mt-6">
+                        <div class="col-md-3">
+                            <label for="" class="mt-1">Juego</label>
+                        </div>
+                        <div class="col-md-9">
+                            <select class="form-control" v-model="juego_sesion">
+                                <option value="" selected disabled>Seleccione</option>
+                                <option v-for="(titulo, index) in juego" :key="index" :value="{ID: titulo.idjuegos, consola: titulo.consola, plataforma: titulo.plataforma, idconsola: titulo.idconsola, idplataforma: titulo.idplataforma }">{{ titulo.nombre }}</option>
+                                <option :value="{ID: 99999999}">Demo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="row mt-6">
+                        <div class="col-md-3">
+                            <label for="" class="mt-1">Consola</label>
+                        </div>
+                        <div class="col-md-9" v-if="juego_sesion.ID === 99999999">
+                            <select class="form-control" v-model="consolademo">
+                                <option value="" selected disabled>Seleccione</option>
+                                <option v-for="(opcion, index) in lista_consola" :key="index" :value="opcion.idconsola">{{ opcion.nombre }}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-9" v-else>
+                            <input type="text" class="form-control" v-model="consola" disabled> {{ juego_sesion.consola }}
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="row mt-6">
+                        <div class="col-md-3">
+                            <label for="" class="mt-1">Plataforma</label>
+                        </div>
+                        <div class="col-md-9" v-if="juego_sesion.ID === 99999999">
+                            <select class="form-control" v-model="plataformademo" disabled>
+                                <option :value="99999999" selected>Demo</option>
+                            </select>
+                        </div>
+                        <div class="col-md-9" v-else>
+                            <input type="text" class="form-control" v-model="plataforma" disabled> {{ juego_sesion.idplataforma }}
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="row mt-6" v-if="juego_sesion.ID === 99999999">
+                        <div class="col-md-3">
+                            <label for="" class="mt-1">Demo</label>
+                        </div>
+                        <div class="col-md-9" v-if="juego_sesion.ID === 99999999">
+                            <input type="text" class="form-control" v-model="demo">
+                        </div>
+                        <div class="col-md-9" v-else>
+                            <input type="text" class="form-control" v-model="demo" disabled>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" @click="agregarJuego">Registrar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="btn-group">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalInsert">Insertar</button>
+</div>
 </template>
 
 <script>
 /* eslint-disable */
 import axios from 'axios';
+import {ref} from 'vue';
+
+
 export default{
     name: "Sesiones",
+    data() {
+        return {
+            sesiones: {},
+            juego: {},
+            juego_sesion: "",
+            consola: "",
+            demo: "",
+            plataforma: "",
+            idconsola: "",
+            idplataforma: "",
+            lista_consola: {},
+            lista_plataforma: {},
+            consolademo: "",
+            plataformademo: 99999999
+        }
+    },
+        mounted(){
+            this.cargaTablaSesiones();
+            this.cargaListaJuegos();
+            this.cargaListadoConsola();          
+        },
+        watch: {
+            juego_sesion(titulo){
+                this.consola = titulo.consola,
+                this.plataforma = titulo.plataforma,
+                this.idconsola = titulo.idconsola,
+                this.idplataforma = titulo.idplataforma
+                
+            }
+        },
+        methods: {
+            cargaTablaSesiones: function(){
+                axios.get("/api/sesiones").then((res) => {
+                    this.sesiones = res.data.data;
+                })
+                .catch(() => {
+                    console.log("Algo anda mal con la tabla 'sesiones'");
+                    alert("Algo anda mal con la tabla 'sesiones'");
+                })
+            },
 
+            cargaListaJuegos: function(){
+                axios.get("/api/lista_juegos").then((res) => {
+                    this.juego = ref(res.data.data[0]);
+                })
+                .catch(() => {
+                    console.log("Algo anda mal con el procedimiento DD_Juegos");
+                    alert("Algo anda mal con el procedimiento DD_Juegos")
+                })
+            },
+            cargaListadoConsola: function(){
+            axios.get("/api/lista_consolas").then((res) => {
+                this.lista_consola = ref(res.data.data[0]);
+            })
+            .catch(() => {
+                console.log("Algo anda mal con el procedimiento DD_Consolas");
+                alert("Algo anda mal con el procedimiento DD_Consolas");
+            })
+        }
+        }
 };
 </script>
