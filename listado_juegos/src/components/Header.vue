@@ -17,9 +17,14 @@
             <li class="nav-item">
                 <router-link class="nav-link active" aria-current="page" to="/">Inicio</router-link>
             </li>
-            <li class="nav-item">
-                <router-link class="nav-link active" aria-current="page" to="/Juegos">
+            <li class="nav-item dropdown">
+                <router-link class="nav-link active dropdown-toggle" aria-current="page" data-bs-toggle="dropdown" aria-expanded="false" to="/Juegos">
                 Juegos</router-link>
+                <ul class="dropdown-menu">
+                    <li><router-link class="dropdown-item" aria-current="page" to="/Juegos">Lista</router-link></li>
+                    <li><a class="dropdown-item" href="#">Editar</a></li>
+                    <li><a class="dropdown-item" href="#">Insertar</a></li>
+                </ul>
             </li>
             <li class="nav-item">
                 <router-link class="nav-link active" aria-current="page" to="/Consolas">
@@ -33,6 +38,9 @@
             <li class="nav-item">
                 <router-link class="nav-link active" aria-current="page" to="/Sesiones">
                 Sesiones</router-link>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#" aria-disabled="true">Wishlist</a>
             </li>                         
         </ul>
     </div>

@@ -4,6 +4,7 @@ import Juegos from '../components/Juegos'
 import Consolas from '../components/Consolas'
 import Plataformas from '../components/Plataformas'
 import Sesiones from '../components/Sesiones'
+import EditarJuego from "@/components/EditarJuego.vue";
 const routes = [
     {
         path: "/",
@@ -12,6 +13,10 @@ const routes = [
     {
         path: "/juegos",
         component: Juegos
+    },
+    {
+        path: "/juegos/:id",
+        component: EditarJuego
     },
     {
         path: "/consolas",

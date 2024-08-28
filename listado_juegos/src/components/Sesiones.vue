@@ -29,7 +29,7 @@
     </div>
     <br>
     <!-- Modal -->
-    <div class="modal fade" id="modalInsert" tabindex="-1" aria-labelledby="modalInsertLabel" aria-hidden="true">
+    <div class="modal fade" id="modalInsert" tabindex="-1" aria-labelledby="modalInsertLabel" aria-hidden="true">      
     <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">
       <div class="modal-header">
@@ -47,7 +47,7 @@
                         <div class="col-md-9">
                             <select class="form-control" v-model="juego_sesion">
                                 <option value="" selected disabled>Seleccione</option>
-                                <option v-for="(titulo, index) in juego" :key="index" :value="{ID: titulo.idjuegos, consola: titulo.consola, plataforma: titulo.plataforma, idconsola: titulo.idconsola, idplataforma: titulo.idplataforma }">{{ titulo.nombre }}</option>
+                                <option v-for="(titulo, index) in juego" :key="index" :value="{ID: titulo.idjuegos, consola: titulo.consola, plataforma: titulo.plataforma, idconsola: titulo.idconsola, idplataforma: titulo.idplataforma, nombre: titulo.nombre }">{{ titulo.nombre }}</option>
                                 <option :value="{ID: 99999999}">Demo</option>
                             </select>
                         </div>
@@ -80,7 +80,7 @@
                             </select>
                         </div>
                         <div class="col-md-9" v-else>
-                            <input type="text" class="form-control" v-model="plataforma" disabled> {{ juego_sesion.idplataforma }}
+                            <input type="text" class="form-control" v-model="plataforma" disabled> {{ juego_sesion.idplataforma }} {{ juego_sesion }}
                         </div>
                     </div>
                     <br>
@@ -110,6 +110,7 @@
   </div>
 </div>
 
+
 <div class="btn-group">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalInsert">Insertar</button>
 </div>
@@ -128,6 +129,7 @@ export default{
             sesiones: {},
             juego: {},
             juego_sesion: "",
+            juego_electo: "",
             consola: "",
             demo: "",
             plataforma: "",
@@ -146,11 +148,11 @@ export default{
         },
         watch: {
             juego_sesion(titulo){
-                this.consola = titulo.consola,
-                this.plataforma = titulo.plataforma,
-                this.idconsola = titulo.idconsola,
+                this.consola = titulo.consola
+                this.plataforma = titulo.plataforma
+                this.idconsola = titulo.idconsola
                 this.idplataforma = titulo.idplataforma
-                
+                this.juego_electo = titulo.nombre
             }
         },
         methods: {
@@ -180,6 +182,18 @@ export default{
             .catch(() => {
                 console.log("Algo anda mal con el procedimiento DD_Consolas");
                 alert("Algo anda mal con el procedimiento DD_Consolas");
+            })
+        },
+        inicioSesion: function(){
+            axios.post("/api/inicio_sesion", {
+                juego: this.juego_electo,
+                idconsola: this.idconsola,
+                idplataforma: this.idplataforma,
+                demo: this.demo
+            }).then((res) => {
+                alert("Sesión iniciada")
+            }).catch(() => {
+                alert("Error al iniciar sesión, intente de nuevo.")
             })
         }
         }

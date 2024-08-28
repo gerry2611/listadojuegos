@@ -133,6 +133,24 @@ app.get("/api/lista_juegos", (req, res) => {
     })
 })
 
+app.get("/api/juego_editar", (req, res) => {
+    let idjuegoeditar = req.body.id;
+    let query = `CALL juego_paraeditar("${idjuegoeditar}");`
+
+    connection.query(query, (err, result) => {
+        if(err){
+            res.json(500, {
+                msg: "Problemas con el procedimiento juego_paraeditar"
+            })
+        }
+
+        res.send(200, {
+            msg: "Datos obtenidos con éxito",
+            data:result
+        })
+    })
+})
+
 app.post("/api/juego_nuevo", (req, res) => {
     console.log("Registrando juego...");
     let nombre = req.body.nombre;
@@ -163,9 +181,95 @@ app.post("/api/juego_nuevo", (req, res) => {
         res.json(200, {
             msg: "Juego nuevo agregado exitosamente a la base de datos",
         })
-        return
+        
     })
 });
+
+app.post("/api/editar_juego", (req, res) => {
+    console.log("Editando juego...");
+    let idjuego = req.body.idjuego;
+    let nombre = req.body.nombre;
+    let idconsola = req.body.idconsola;
+    let idplataforma = req.body.idplataforma;
+    let fecha_adquirido = req.body.fecha_adquirido;
+    let estado = req.body.estado;
+    let completado = req.body.completado;
+    let fecha_completado = req.body.fecha_completado;
+    let nota = req.body.nota;
+
+    if(!completado){
+        completado = 0
+    }else{
+        completado = 1
+    }
+    
+
+    let query = `CALL editar_juego(${idjuego},"${nombre}",${idconsola},${idplataforma},"${fecha_adquirido}","${estado}",${completado},"${fecha_completado}","${nota}");`;
+
+    if(nota === null) {
+        query = `CALL editar_juego(${idjuego},"${nombre}",${idconsola},${idplataforma},"${fecha_adquirido}","${estado}",${completado},"${fecha_completado}",${nota});`;
+    }
+    connection.query(query, (err, result) => {
+        if(err){
+            res.json(500, {
+                msg: "Error al editar el juego"
+            })
+            return
+        }
+
+        res.json(200, {
+            msg: "Se ha editado el juego " + idjuego + "con éxito",
+        })
+        
+    })
+});
+
+app.post("/api/inicio_sesion", (req, res) => {
+    console.log("Iniciando sesión...");
+    let juego = req.body.juego;
+    let idconsola = req.body.idconsola;
+    let idplataforma = req.body.idplataforma;
+    let demo = req.body.demo;
+
+    if(juego != "Demo"){
+        demo = ""
+    }
+
+    let query = `CALL sesion_inicio("${juego}", ${idconsola}, ${idplataforma}, "${demo}");`
+
+    connection.query(query, (err, result) => {
+        if(err){
+            res.json(500, {
+                msg: "Error al iniciar la sesión"
+            })
+            return
+        }
+
+        res.json(200, {
+            msg: "Sesión iniciada",
+        })        
+    })
+});
+
+app.put("/api/fin_sesion", (req, res) => {
+    let juego = req.body.juego;
+
+    let query = `CALL sesion_fin(${juego});`
+
+    connection.query(query, (err, result) => {
+        if(err){
+            res.json(500, {
+                msg: "Error al finalizar la sesión."
+            })
+            return
+        }
+
+        res.json(200, {
+            msg: "Sesión finalizada"
+        })
+    })
+});
+
 const connection = mysql.createConnection({
     host: "localhost",
     user: "gerry",
