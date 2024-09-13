@@ -5,6 +5,8 @@ import Consolas from '../components/Consolas'
 import Plataformas from '../components/Plataformas'
 import Sesiones from '../components/Sesiones'
 import EditarJuego from "@/components/EditarJuego.vue";
+import Wishlist from "@/components/Wishlist.vue";
+import Estadisticas from "@/components/Estadisticas.vue";
 const routes = [
     {
         path: "/",
@@ -15,7 +17,7 @@ const routes = [
         component: Juegos
     },
     {
-        path: "/juegos/:id",
+        path: "/juegos/editar",
         component: EditarJuego
     },
     {
@@ -29,7 +31,15 @@ const routes = [
     {
         path: "/sesiones",
         component: Sesiones
-    }
+    },
+    {
+        path: "/wishlist",
+        component: Wishlist
+    },
+    {
+        path: "/estadisticas",
+        component: Estadisticas
+    },
 ];
 
 const router = createRouter({

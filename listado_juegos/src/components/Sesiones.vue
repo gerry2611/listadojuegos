@@ -15,7 +15,7 @@
             </thead>
             <tbody style="color: #D1CBC8;">
                 <tr v-for="sesion in sesiones" :key="sesion.idsesion">
-                    <td></td>
+                    <td>{{ sesion.idsesion }}</td>
                     <td>{{ sesion.juego }}</td>
                     <td>{{ sesion.consola }}</td>
                     <td>{{ sesion.plataforma }}</td>

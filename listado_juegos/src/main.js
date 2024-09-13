@@ -9,4 +9,6 @@ import 'plotly.js-dist/plotly';
 import 'feather-icons/dist/feather';
 import 'alertifyjs/alertify';
 import 'alertifyjs/css/alertify.css';
+import 'vue-chartjs'
+import 'chart.js'
 createApp(App).use(router).mount('#app');

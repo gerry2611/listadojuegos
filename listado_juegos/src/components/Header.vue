@@ -40,7 +40,13 @@
                 Sesiones</router-link>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href="#" aria-disabled="true">Wishlist</a>
+                <router-link class="nav-link active" aria-current="page" to="/Wishlist">
+                Wishlist</router-link>
+            </li>
+            <li class="nav-item">
+                <router-link class="nav-link active" aria-current="page" to="/Estadisticas">
+                    Estadísticas
+                </router-link>
             </li>                         
         </ul>
     </div>

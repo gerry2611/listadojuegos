@@ -156,7 +156,7 @@
     </div>
   </div>
 </div>
-    <div class="btn-group">
+    <div class="btn-group" style="text-align: center;">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalInsert">Insertar</button>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalEdit">Editar</button>
@@ -181,7 +181,7 @@
                         </div>
                         <div class="col-md-9">
                             <select class="form-control" v-model="juego_aeditar">
-                                <option value="" selected>Seleccione</option>
+                                <option :value={} selected disabled>Seleccione</option>
                                 <option v-for="opcion in juegos" :value="opcion" :key="opcion.idjuegos">{{ opcion.nombre }}</option>
                             </select>
                             
@@ -400,6 +400,14 @@ export default{
                 nota: this.nota
             }).then((res) => {
                 alert("Juego guardado con éxito en la Base de datos");
+                this.nombre = ""
+                this.lista_consola = 0
+                this.lista_plataforma = 0
+                this.fecha_adquirido = ""
+                this.estado = ""
+                this.completado = false
+                this.fecha_completado = ""
+                this.nota = ""
             }).catch(() => {
                 alert("Error al agregar el juego, intente más tarde");
             })
@@ -417,6 +425,16 @@ export default{
                 nota: this.notaEdit
             }).then((res) => {
                 alert("Juego editado con éxito en la Base de datos");
+                this.idjuego = 0
+                this.nombreEdit = ""
+                this.lista_consolaEdit = 0
+                this.lista_plataformaEdit = 0
+                this.fecha_adquiridoEdit = ""
+                this.estadoEdit = ""
+                this.completadoEdit = false
+                this.fecha_completadoEdit = ""
+                this.notaEdit = ""
+                this.juego_aeditar = {}
             }).catch(() => {
                 alert("Error al editar el juego, intente más tarde");
             })

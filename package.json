@@ -17,11 +17,13 @@
     "@popperjs/core": "^2.11.8",
     "alertifyjs": "^1.14.0",
     "body-parser": "^1.20.2",
+    "chart.js": "^4.4.4",
     "express": "^4.19.2",
     "feather-icons": "^4.29.2",
     "mysql": "^2.18.1",
     "mysql2": "^3.9.7",
     "plotly.js-dist": "^2.33.0",
-    "volar-service-vetur": "^0.0.47"
+    "volar-service-vetur": "^0.0.47",
+    "vue-chartjs": "^5.3.1"
   }
 }
