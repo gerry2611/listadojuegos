@@ -7,6 +7,8 @@ import Sesiones from '../components/Sesiones'
 import EditarJuego from "@/components/EditarJuego.vue";
 import Wishlist from "@/components/Wishlist.vue";
 import Estadisticas from "@/components/Estadisticas.vue";
+import Compras from "@/components/Compras.vue";
+import Reservas from "@/components/Reservas.vue";
 const routes = [
     {
         path: "/",
@@ -40,6 +42,14 @@ const routes = [
         path: "/estadisticas",
         component: Estadisticas
     },
+    {
+        path: "/compras",
+        component: Compras
+    },
+    {
+        path: "/reservas",
+        component: Reservas
+    }
 ];
 
 const router = createRouter({

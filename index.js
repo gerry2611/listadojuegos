@@ -150,6 +150,24 @@ app.get("/api/lista_juegos", (req, res) => {
     })
 })
 
+app.get("/api/lista_compras", (req, res) => {
+
+    let query = 'SELECT * FROM registro_compras;'
+
+    connection.query(query, (err, result) => {
+        if(err){
+            res.json(500, {
+                msg: "Problemas con la tabla registro_compras"
+            })
+        }
+    
+        res.send(200, {
+            msg: "Datos obtenidos con éxito",
+            data:result
+        })
+    })
+})
+
 app.get("/api/juego_editar", (req, res) => {
     let idjuegoeditar = req.body.id;
     let query = `CALL juego_paraeditar("${idjuegoeditar}");`
@@ -185,6 +203,41 @@ app.get("/api/lista_deseados", (req, res) => {
     })
 })
 
+app.get("/api/lista_reservados", (req, res) => {
+    let query = 'SELECT * FROM lista_reservas;'
+
+    connection.query(query, (err, result) => {
+        if(err){
+            res.json(500, {
+                msg: "Problemas con la tabla juegos_reservado"
+            })
+        }
+
+        res.send(200, {
+            msg: "Datos obtenidos con éxito",
+            data:result
+        })
+    })
+})
+
+app.get("/api/movimiento", (req, res) => {
+    let query = 'SELECT * FROM cuentas_online_historial;'
+
+    connection.query(query, (err, result) => {
+        if(err){
+            res.json(500, {
+                msg: "Problemas con la tabla cuentas_online_historial"
+            })
+        }
+
+        res.send(200, {
+            msg: "Datos obtenidos con éxito",
+            data:result
+        }
+        )
+    })
+})
+
 app.post("/api/juego_nuevo", (req, res) => {
     console.log("Registrando juego...");
     let nombre = req.body.nombre;
@@ -200,6 +253,14 @@ app.post("/api/juego_nuevo", (req, res) => {
         completado = 0
     }else{
         completado = 1
+    }
+
+    if(nota === ''){
+        nota = null
+    }
+
+    if(fecha_completado === ''){
+        fecha_completado = '1900-01-01'
     }
 
     let query = `CALL agregar_juego("${nombre}",${idconsola},${idplataforma},"${fecha_adquirido}","${estado}",${completado},"${fecha_completado}","${nota}");`;
@@ -339,6 +400,7 @@ app.post("/api/editar_juego_deseado", (req, res) => {
 
 app.post("/api/inicio_sesion", (req, res) => {
     console.log("Iniciando sesión...");
+    let id = req.body.id;
     let juego = req.body.juego;
     let idconsola = req.body.idconsola;
     let idplataforma = req.body.idplataforma;
@@ -348,7 +410,7 @@ app.post("/api/inicio_sesion", (req, res) => {
         demo = ""
     }
 
-    let query = `CALL sesion_inicio("${juego}", ${idconsola}, ${idplataforma}, "${demo}");`
+    let query = `CALL sesion_inicio(${id}, "${juego}", ${idconsola}, ${idplataforma}, "${demo}");`
 
     connection.query(query, (err, result) => {
         if(err){
@@ -364,10 +426,11 @@ app.post("/api/inicio_sesion", (req, res) => {
     })
 });
 
-app.put("/api/fin_sesion", (req, res) => {
+app.post("/api/fin_sesion", (req, res) => {
+    let id = req.body.id;
     let juego = req.body.juego;
 
-    let query = `CALL sesion_fin(${juego});`
+    let query = `CALL sesion_fin( ${id},"${juego}");`
 
     connection.query(query, (err, result) => {
         if(err){
@@ -395,10 +458,16 @@ app.post("/api/registrar_compra", (req, res) => {
     let precio_regular = req.body.precio_regular;
     let nota = req.body.nota;
 
-    if(compratienda){
+/*     if(compratienda){
         compratienda = 1
     }else{
         compratienda = 0
+    } */
+
+    if(precio_oferta){
+        precio_oferta = 1
+    }else{
+        precio_oferta = 0
     }
 
     if(descuento === ""){
@@ -409,7 +478,15 @@ app.post("/api/registrar_compra", (req, res) => {
         precio_regular = 0
     }
 
-    let query = `CALL juego_comprado(${idjuego},"${nombre}",${consola},"${tienda}",${compratienda},${precio},${precio_oferta},${descuento},${precio_regular},"${nota}");`
+    let query = `CALL juego_comprado(${idjuego},"${nombre}",${consola},"${tienda}","Juego",${precio},"${nota}");`
+
+    if(precio_oferta === 0){
+        query = `CALL juego_comprado_oferta(${idjuego},"${nombre}",${consola},"${tienda}","Juego",${precio}, ${descuento}, ${precio_regular}, "${nota}");` 
+    }
+
+    if(compratienda){
+        query = `CALL juego_comprado_tienda(${idjuego},"${nombre}",${consola},${precio},"1900-01-01","${nota}");`
+    }
 
     connection.query(query, (err, result) => {
         if(err){
@@ -431,17 +508,21 @@ app.post("/api/registrar_reserva", (req, res) => {
     let tipo = req.body.tipo;
     let consola = req.body.consola;
     let tienda = req.body.tienda;
-    let compratienda = req.body.compratienda;
+    let reservatienda = req.body.reservatienda;
     let precio = req.body.precio;
     let nota = req.body.nota;
 
-    if(compratienda){
-        compratienda = 1
-    }else{
-        compratienda = 0
+    if(reservatienda){
+        reservatienda = 1
+    } else {
+        reservatienda = 0
     }
 
-    let query = `CALL juego_reservado(${idjuego},"${nombre}","${tipo}",${consola},"${tienda}",${compratienda},${precio},"${nota}");`
+    if (nota == ""){
+        nota = null
+    }
+
+    let query = `CALL juego_reservado(${idjuego},"${nombre}","${tipo}",${consola},"${tienda}",${reservatienda},${precio},"${nota}");`
 
     connection.query(query, (err, result) => {
         if(err){
@@ -456,6 +537,38 @@ app.post("/api/registrar_reserva", (req, res) => {
         })        
     })
 });
+
+app.post("/api/reserva_a_backlog", (req, res) => {
+    let id = req.body.id;
+    let nombre = req.body.nombre;
+    let consola = req.body.IDConsola;
+    let plataforma = req.body.IDPlataforma;
+    let tienda = req.body.tienda;
+    let reservatienda = req.body.reservatienda;
+    let precio = req.body.precio;
+    let fecha_reservado = req.body.fecha_reservado;
+
+    if(reservatienda){
+        reservatienda = 1
+    }else{
+        reservatienda = 0
+    }
+
+    let query = `CALL reservado_enviara_backlog(${id},"${nombre}",${consola},${plataforma},${precio},${reservatienda},"${tienda}",'${fecha_reservado}');`
+
+    connection.query(query, (err, result) => {
+        if(err){
+            res.json(500, {
+                msg: "Error al envíar al backlog"
+            })
+            return
+        }
+
+        res.json(200, {
+            msg: "Envíado al backlog"
+        })
+    })
+})
 
 const connection = mysql.createConnection({
     host: "localhost",

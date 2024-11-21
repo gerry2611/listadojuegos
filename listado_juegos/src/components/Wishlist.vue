@@ -450,11 +450,11 @@
                                         <label for="" class="mt-1">Tienda</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="" class="mt-1">{{ juego_reservado.tienda }}</label>
-                                        <input type="text" v-model="tiendareserva" hidden>
+                                        <label for="" class="mt-1" :hidden="reserva_tienda">{{ juego_reservado.tienda }}</label>
+                                        <input type="text" v-model="tiendareserva" :hidden="!reserva_tienda">
                                     </div>
                                     <div class="col-md-3">
-                                        <label for="" class="mt-1" :hidden="juego_reservado.nombre == null">Compra en tienda</label>
+                                        <label for="" class="mt-1" :hidden="juego_reservado.nombre == null">Reserva en tienda</label>
                                         &nbsp;
                                         <input type="checkbox" v-model="reserva_tienda" :hidden="juego_reservado.nombre == null">
                                     </div>                                    
@@ -464,7 +464,7 @@
                                         <label for="" class="mt-1">Precio</label>
                                     </div>
                                     <div class="col-md-9">
-                                        <label for="" class="mt-1" v-if="juego_reservado.nombre != null">${{ juego_reservado.precio }}</label>
+                                        <label for="" class="mt-1" v-if="juego_reservado.nombre != null" :hidden="reserva_tienda">${{ juego_reservado.precio }}</label>
                                         <input type="text" v-model="precio_juegoreservado" hidden>
                                         <input type="text" v-model="precio_juegoreservado" v-if="reserva_tienda && juego_reservado.nombre != null" :hidden="!reserva_tienda">
                                     </div>
@@ -482,7 +482,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Registrar</button>
+                    <button type="button" class="btn btn-primary" @click="juegoReservado">Registrar</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>                      
                 </div>
             </div>
@@ -698,6 +698,22 @@ export default{
                 tienda: this.tiendareserva,
                 reservatienda: this.reserva_tienda,
                 precio: this.precio_juegoreservado
+            }).then((res) => {
+                alert("Compra registrada con éxito.");
+                this.juego_reservado = {}
+                this.idjuego = 0
+                this.nombre_reserva = ""
+                this.consolaid = ""
+                this.tiendareserva = ""
+                this.reserva_tienda = false
+                this.precio_juegoreservado = ""
+                this.precio = ""
+                this.descuento = ""
+                this.precio_regular = ""
+                this.nota = ""
+                this.precio_oferta = false                
+            }).catch(() => {
+                alert("Error al registrar la reserva, intente más tarde.");
             })
         }
     },

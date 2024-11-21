@@ -401,8 +401,8 @@ export default{
             }).then((res) => {
                 alert("Juego guardado con éxito en la Base de datos");
                 this.nombre = ""
-                this.lista_consola = 0
-                this.lista_plataforma = 0
+                this.lista_consola = ""
+                this.lista_plataforma = ""
                 this.fecha_adquirido = ""
                 this.estado = ""
                 this.completado = false
@@ -427,8 +427,8 @@ export default{
                 alert("Juego editado con éxito en la Base de datos");
                 this.idjuego = 0
                 this.nombreEdit = ""
-                this.lista_consolaEdit = 0
-                this.lista_plataformaEdit = 0
+                this.lista_consolaEdit = ""
+                this.lista_plataformaEdit = ""
                 this.fecha_adquiridoEdit = ""
                 this.estadoEdit = ""
                 this.completadoEdit = false

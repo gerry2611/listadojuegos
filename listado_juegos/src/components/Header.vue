@@ -47,7 +47,17 @@
                 <router-link class="nav-link active" aria-current="page" to="/Estadisticas">
                     Estadísticas
                 </router-link>
-            </li>                         
+            </li> 
+            <li class="nav-item">
+                <router-link class="nav-link active" aria-current="page" to="/Compras">
+                    Compras
+                </router-link>
+            </li>
+            <li class="nav-item">
+                <router-link class="nav-link active" aria-current="page" to="/Reservas">
+                    Reservas
+                </router-link>
+            </li>                        
         </ul>
     </div>
     </nav>
